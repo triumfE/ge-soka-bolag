@@ -22,9 +22,8 @@ export class CarlerCrawler extends BaseCrawler {
           const rawText = this.cleanText($el.text());
           if (!title) return;
 
-          const industrial = /industri|tillverk|mekanis|cnc|svets|plåt|metall|verkstad|produktion|maskin/i.test(rawText);
-          const distress = /konkurs|rekonstruktion|avveckl|obestånd/i.test(rawText);
-          if (!industrial && !distress) return;
+          const distress = /konkurs|rekonstruktion|avveckl|obestånd|konkursbo|anbudsunderlag|försäljning|överlåtelse/i.test(rawText);
+          if (!distress) return;
 
           listings.push({
             title, url: link ? (link.startsWith("http") ? link : `${this.baseUrl}${link}`) : url,

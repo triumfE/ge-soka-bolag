@@ -23,11 +23,7 @@ export async function POST(req: NextRequest) {
 
   for (const source of sources) {
     const domain = source.domain || new URL(source.url).hostname;
-    const crawler = getCrawler(source.id, domain);
-    if (!crawler) {
-      results.push({ source: source.name, listings: 0, newCompanies: 0, errors: [`No crawler adapter for ${domain}`] });
-      continue;
-    }
+    const crawler = getCrawler(source.id, domain, source.url);
 
     const job = await createCrawlJob(source.id);
     let newCompanies = 0;

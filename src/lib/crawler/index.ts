@@ -5,6 +5,7 @@ import { ObjektvisionCrawler } from "./objektvision";
 import { AckordscentralenCrawler } from "./ackordscentralen";
 import { BolagsbronCrawler } from "./bolagsbron";
 import { CarlerCrawler } from "./carler";
+import { GenericCrawler } from "./generic";
 
 const crawlerMap: Record<string, new (sourceId: string) => BaseCrawler> = {
   "bolagsplatsen.se": BolagsplatsenCrawler,
@@ -15,10 +16,11 @@ const crawlerMap: Record<string, new (sourceId: string) => BaseCrawler> = {
   "carler.se": CarlerCrawler,
 };
 
-export function getCrawler(sourceId: string, domain: string): BaseCrawler | null {
+export function getCrawler(sourceId: string, domain: string, baseUrl?: string): BaseCrawler {
   const key = Object.keys(crawlerMap).find(k => domain.includes(k));
-  if (!key) return null;
-  return new crawlerMap[key](sourceId);
+  if (key) return new crawlerMap[key](sourceId);
+  // Fallback to generic crawler
+  return new GenericCrawler(sourceId, baseUrl || `https://${domain}`);
 }
 
 export type { CrawlResult, RawListing };
