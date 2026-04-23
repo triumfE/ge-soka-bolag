@@ -3,8 +3,9 @@ import { getSupabase } from "@/lib/supabase";
 import { classifyListing } from "@/lib/ai/classify";
 import {
   crawlBolagsplatsenBrowser, crawlObjektvisionBrowser,
-  crawlBolagsbronBrowser, crawlKonkurslistanBrowser, closeBrowser
+  crawlBolagsbronBrowser, closeBrowser
 } from "@/lib/crawler/browser";
+import { crawlKonkurslistanFull } from "@/lib/crawler/konkurslistan-browser";
 import type { RawListing } from "@/lib/crawler/base";
 
 export const dynamic = "force-dynamic";
@@ -81,7 +82,7 @@ export async function POST() {
     { name: "Bolagsplatsen (browser)", fn: crawlBolagsplatsenBrowser },
     { name: "Objektvision (browser)", fn: crawlObjektvisionBrowser },
     { name: "Bolagsbron (browser)", fn: crawlBolagsbronBrowser },
-    { name: "Konkurslistan (browser)", fn: crawlKonkurslistanBrowser },
+    { name: "Konkurslistan (browser)", fn: crawlKonkurslistanFull },
   ];
 
   for (const c of crawlers) {

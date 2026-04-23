@@ -12,7 +12,7 @@ export class KonkurslistanCrawler extends BaseCrawler {
     let pagesCrawled = 0;
 
     try {
-      const html = await this.fetchPage(`${this.baseUrl}/konkurser`);
+      const html = await this.fetchPage(`${this.baseUrl}/alla-konkurser`);
       pagesCrawled++;
       const $ = this.parse(html);
 

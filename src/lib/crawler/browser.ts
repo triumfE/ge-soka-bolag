@@ -188,7 +188,7 @@ export async function crawlKonkurslistanBrowser(): Promise<RawListing[]> {
   const page = await stealthPage(browser);
 
   try {
-    await page.goto("https://www.konkurslistan.se", { waitUntil: "networkidle", timeout: 20000 });
+    await page.goto("https://www.konkurslistan.se/alla-konkurser", { waitUntil: "networkidle", timeout: 20000 });
     await delay(2000, 4000);
     const html = await page.content();
     const $ = cheerio.load(html);
