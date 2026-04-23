@@ -78,7 +78,7 @@ export default function Dashboard() {
             {/* Company info */}
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                <span style={{ fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{c.name}</span>
+                <Link href={`/company/${c.id}`} style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", textDecoration: "none" }}>{c.name}</Link>
                 <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 8px", borderRadius: 999,
                   background: `${statusColors[c.sale_status]}18`, color: statusColors[c.sale_status] }}>
                   {statusLabels[c.sale_status]}
