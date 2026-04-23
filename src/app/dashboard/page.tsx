@@ -44,12 +44,13 @@ export default function Dashboard() {
 
   useEffect(() => { loadData(); }, []);
 
-  const runCrawl = async () => {
+  const runCrawl = async (endpoint = "/api/crawl-browser") => {
     setCrawling(true);
     try {
-      const res = await fetch("/api/crawl", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+      const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
       const data = await res.json();
-      alert(`Crawl complete: ${JSON.stringify(data.results?.map((r: { source: string; newCompanies: number }) => `${r.source}: ${r.newCompanies} new`))}`);
+      const summary = data.results?.map((r: { source: string; found: number; classified: number }) => `${r.source}: ${r.found} found, ${r.classified} new`).join("\n");
+      alert(`Crawl complete!\n\n${summary}\n\nTotal new: ${data.total_classified ?? data.results?.reduce((n: number, r: { newCompanies?: number; classified?: number }) => n + (r.newCompanies ?? r.classified ?? 0), 0)}`);
       await loadData();
     } catch (e) {
       alert(`Crawl failed: ${e instanceof Error ? e.message : String(e)}`);
@@ -90,12 +91,19 @@ export default function Dashboard() {
               <Database size={12} /> Demo mode
             </span>
           )}
-          <button onClick={runCrawl} disabled={crawling} style={{
+          <button onClick={() => runCrawl("/api/crawl")} disabled={crawling} style={{
+            display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 8,
+            background: "white", color: "#64748b", border: "1px solid #e2e8f0", cursor: crawling ? "wait" : "pointer",
+            fontSize: 13, fontWeight: 600, opacity: crawling ? 0.7 : 1,
+          }}>
+            <RefreshCw size={14} /> Quick Crawl
+          </button>
+          <button onClick={() => runCrawl("/api/crawl-browser")} disabled={crawling} style={{
             display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 8,
             background: "#0070f3", color: "white", border: "none", cursor: crawling ? "wait" : "pointer",
             fontSize: 13, fontWeight: 600, opacity: crawling ? 0.7 : 1,
           }}>
-            <RefreshCw size={14} className={crawling ? "animate-spin" : ""} /> {crawling ? "Crawling..." : "Run Crawl"}
+            <RefreshCw size={14} /> {crawling ? "Crawling..." : "Full Crawl (Browser)"}
           </button>
         </div>
       </div>

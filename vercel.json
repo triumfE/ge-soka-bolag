@@ -1,0 +1,19 @@
+{
+  "crons": [
+    {
+      "path": "/api/crawl-browser",
+      "schedule": "0 6,18 * * *"
+    }
+  ],
+  "functions": {
+    "src/app/api/crawl-browser/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/crawl/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/crawl-industry/route.ts": {
+      "maxDuration": 300
+    }
+  }
+}
